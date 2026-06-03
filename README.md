@@ -233,21 +233,63 @@ power_source
 energy_source
 ```
 
-## Moving to Another Server
+## Clone and Auto-Run on Another Server
 
-Copy the full `gpu_utilizer/` directory to the target server. Then:
+On a target GPU server, clone this repository and ask a coding agent to read this README before changing anything:
 
-1. Install or activate a PyTorch CUDA environment.
-2. Install `nvidia-ml-py`.
-3. Confirm the GPU is idle.
-4. Edit `config.ini` or create a model-specific config.
-5. Run `profile_layers.py`.
+```bash
+git clone https://github.com/janus103/gpu-utilizer.git
+cd gpu-utilizer
+```
 
-For an agent-ready prompt, see:
+Agent instruction:
 
 ```text
-Explains/agent_transfer_prompt.md
+You are on a GPU server. I cloned `https://github.com/janus103/gpu-utilizer`.
+
+Goal:
+Read `README.md`, set up only the missing dependencies, validate CUDA/NVML, and run layer-level GPU profiling. Save per-layer Frequency, estimated Cycle, Energy, and Power to CSV.
+
+Rules:
+1. Do not use `nvidia-smi` fallback for paper measurements.
+2. Use strict NVML Python API mode by default.
+3. If NVML Python API is missing, install `nvidia-ml-py` or stop and report the issue.
+4. Before profiling, confirm the selected GPU volatile utilization is 0%.
+5. If GPU utilization is not 0%, stop and report which process/GPU is busy.
+6. Do not reinstall PyTorch unless CUDA compatibility is broken.
+7. Do not modify the user's model code unless explicitly requested.
+
+Steps:
+1. Inspect the environment:
+   `python3 -c "import torch; print(torch.__version__, torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'no cuda')"`
+2. Validate NVML:
+   `python3 - <<'PY'
+import pynvml
+pynvml.nvmlInit()
+h = pynvml.nvmlDeviceGetHandleByIndex(0)
+print('power_mw', pynvml.nvmlDeviceGetPowerUsage(h))
+print('sm_clock_mhz', pynvml.nvmlDeviceGetClockInfo(h, pynvml.NVML_CLOCK_SM))
+print('gpu_util', pynvml.nvmlDeviceGetUtilizationRates(h).gpu)
+PY`
+3. If dependencies are missing, install only missing packages:
+   `python3 -m pip install nvidia-ml-py pandas numpy`
+4. Run the built-in example:
+   `python3 profile_layers.py --config config.ini`
+5. If profiling a local timm model, generate the layer CSV:
+   `python3 extract_timm_layers.py --timm-root <PATH_TO_PYTORCH_IMAGE_MODELS_OR_TIMM_PROJECT> --model mobilenetv2_100 --batch 1 --repeat 20 --warmup 5 --output examples/mobilenetv2_100_bs1_layers.csv`
+6. Profile the MobileNetV2 layer CSV:
+   `python3 profile_layers.py --config config_mobilenetv2_timm.ini`
+7. Summarize:
+   - Number of profiled layers.
+   - Status counts.
+   - Layer type counts.
+   - Output CSV path.
+   - Whether `nvidia_smi_fallback_allowed` is false in the result.
+
+If the server is Docker-based, confirm the container was launched with GPU support, for example `--gpus all`. Do not use `--nvidia-smi-fallback` unless the user explicitly asks for diagnostic mode.
 ```
+
+The shorter standalone version of this prompt is also kept in `Explains/agent_transfer_prompt.md`.
 
 ## Notes and Limitations
 
