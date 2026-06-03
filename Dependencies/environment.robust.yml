@@ -1,0 +1,15 @@
+name: gpu-utilizer
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.9
+  - pytorch
+  - pytorch-cuda
+  - numpy
+  - pandas
+  - pip
+  - pip:
+      - nvidia-ml-py

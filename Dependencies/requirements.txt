@@ -1,0 +1,4 @@
+torch
+numpy
+pandas
+nvidia-ml-py
