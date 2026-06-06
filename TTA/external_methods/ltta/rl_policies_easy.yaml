@@ -1,0 +1,50 @@
+policies:
+  # Notes
+  # - This file intentionally excludes:
+  #   - "Auto*" style composed policies (AutoAugment policies are not used here)
+  #   - geometric transforms (Rotate/Shear*/Translate*/Flip*)
+  # - Levels use timm RA scale (roughly 0..10). Higher is usually stronger for *Increasing variants.
+
+  # -----------------------
+  # EASY (10)
+  # -----------------------
+  - id: "easy_01_brightness_mild"
+    ops:
+      - { name: "BrightnessIncreasing", level: 2 }
+
+  - id: "easy_02_contrast_mild"
+    ops:
+      - { name: "ContrastIncreasing", level: 2 }
+
+  - id: "easy_03_color_mild"
+    ops:
+      - { name: "ColorIncreasing", level: 2 }
+
+  - id: "easy_04_sharpness_mild"
+    ops:
+      - { name: "SharpnessIncreasing", level: 2 }
+
+  - id: "easy_05_equalize"
+    ops:
+      - { name: "Equalize", level: 0 }
+
+  - id: "easy_06_gaussian_noise_low"
+    ops:
+      - { name: "GaussianNoise", level: 2 }
+
+  - id: "easy_07_salt_noise_low"
+    ops:
+      - { name: "SaltNoise", level: 2 }
+
+  - id: "easy_08_solarize_mild"
+    ops:
+      - { name: "SolarizeIncreasing", level: 2 }
+
+  - id: "easy_09_posterize_mild"
+    ops:
+      - { name: "PosterizeIncreasing", level: 2 }
+
+  - id: "easy_10_bright_then_contrast"
+    ops:
+      - { name: "BrightnessIncreasing", level: 2 }
+      - { name: "ContrastIncreasing", level: 2 }

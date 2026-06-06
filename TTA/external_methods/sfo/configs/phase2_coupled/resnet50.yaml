@@ -1,0 +1,60 @@
+model: resnet50
+num_classes: 1000
+img_size: 224
+
+# checkpoints / data
+data_dir: /path/to/imagenet
+train_split: train
+val_split: val
+phase1_aug_ckpt: /path/to/output3/phase1_resnet50_direct_warmrestart/best.pth.tar
+initial_checkpoint: /path/to/ZOA_resnet50_timm_format.pth
+
+# adapter
+stem_target: conv1
+num_bases: 4
+adapter_rank: 4
+adapter_scale: 1.0
+adapter_init_std: 0.001
+train_stem_affine: false
+
+# optimization
+epochs: 20
+batch_size: 64
+workers: 4
+lr: 0.001
+weight_decay: 0.0001
+clip_grad: 1.0
+
+# train augmentation (phase1 aligned)
+new_depth: 3
+min_sl: 0.3
+max_sl: 1.0
+curriculum: true
+cur_min_sl_start: 0.1
+cur_max_sl_start: 0.5
+
+# inner loop (train)
+inner_lr_train: 0.05
+inner_steps_train: 1
+w_clean_rel: 1.0
+w_dist_rel: 1.0
+w_znorm_rel: 1.0
+w_trust: 0.001
+w_kl: 0.0
+p_clean_ref: 0.537
+dist_ref: 2.08
+znorm_ref: 2.10
+rel_mode: relu
+
+# episode schedule
+episode_mode: mixed
+continual_ratio_start: 0.2
+continual_ratio_end: 0.5
+episode_pattern: ""
+carry_scope: within_domain
+carry_decay: 0.95
+carry_reset_every: 0
+
+# output
+output: ./output
+experiment: phase2_coupled_lora_resnet50

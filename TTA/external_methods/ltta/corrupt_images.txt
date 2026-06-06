@@ -1,0 +1,1 @@
+/home/oem/jin/datasets/imagenet/val/n07880968/ILSVRC2012_val_00049547.JPEG

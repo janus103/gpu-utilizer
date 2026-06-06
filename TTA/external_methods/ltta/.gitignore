@@ -1,0 +1,87 @@
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Tooling caches
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# Datasamples & weights
+output/
+R26*
+_smoke_imagenet*/
+.cursor/
+*.csv
+
+# Experiment logs / outputs (often large & reproducible)
+wandb/
+runs/
+lightning_logs/
+tensorboard/
+tb_logs/
+
+# Model weights / checkpoints (DO NOT COMMIT)
+*.pth
+*.pt
+*.ckpt
+*.pth.tar
+*.onnx
+*.h5
+*.hdf5
+
+# Serialized arrays / pickles (often derived artifacts)
+*.npy
+*.npz
+*.pkl
+*.joblib
+
+# Common checkpoint directories
+checkpoints/
+checkpoint/
+weights/
+weight/
+
+# Local cleanup/backup folder contains its own nested git repo; exclude from this repo.
+DEL_CLEAN/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.swn
+*~
+*.bak
+*.orig
+*.rej
+
+# IDE settings
+.vscode/
+.idea/
+
+# Local virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Spreadsheets / analysis artifacts (usually generated)
+*.xls
+*.xlsx
+
+# Project-specific generated outputs / backups (do not commit)
+temp/
+temp2/
+csv_back/
+back_img/
+batch_test_*/
+figure_backup/
+figures/
+
+# Personal scratch / notes
+memo
+
+

@@ -8,6 +8,8 @@ __pycache__/
 # Generated profiling outputs
 Results/*.csv
 Results/*.log
+Results/**/*.csv
+Results/**/*.log
 
 # Nsight outputs
 *.qdrep

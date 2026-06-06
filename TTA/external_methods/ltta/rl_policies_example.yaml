@@ -1,0 +1,110 @@
+policies:
+  # Notes
+  # - This file intentionally excludes:
+  #   - "Auto*" style composed policies (AutoAugment policies are not used here)
+  #   - geometric transforms (Rotate/Shear*/Translate*/Flip*)
+  # - Levels use timm RA scale (roughly 0..10). Higher is usually stronger for *Increasing variants.
+
+  # -----------------------
+  # EASY (10)
+  # -----------------------
+  - id: "easy_01_brightness_mild"
+    ops:
+      - { name: "BrightnessIncreasing", level: 2 }
+
+  - id: "easy_02_contrast_mild"
+    ops:
+      - { name: "ContrastIncreasing", level: 2 }
+
+  - id: "easy_03_color_mild"
+    ops:
+      - { name: "ColorIncreasing", level: 2 }
+
+  - id: "easy_04_sharpness_mild"
+    ops:
+      - { name: "SharpnessIncreasing", level: 2 }
+
+  - id: "easy_05_equalize"
+    ops:
+      - { name: "Equalize", level: 0 }
+
+  - id: "easy_06_gaussian_noise_low"
+    ops:
+      - { name: "GaussianNoise", level: 2 }
+
+  - id: "easy_07_salt_noise_low"
+    ops:
+      - { name: "SaltNoise", level: 2 }
+
+  - id: "easy_08_solarize_mild"
+    ops:
+      - { name: "SolarizeIncreasing", level: 2 }
+
+  - id: "easy_09_posterize_mild"
+    ops:
+      - { name: "PosterizeIncreasing", level: 2 }
+
+  - id: "easy_10_bright_then_contrast"
+    ops:
+      - { name: "BrightnessIncreasing", level: 2 }
+      - { name: "ContrastIncreasing", level: 2 }
+
+  # -----------------------
+  # HARD (10)
+  # -----------------------
+  - id: "hard_01_invert"
+    ops:
+      - { name: "Invert", level: 0 }
+
+  - id: "hard_02_solarizeadd_then_noise"
+    ops:
+      - { name: "SolarizeAdd", level: 8 }
+      - { name: "GaussianNoise", level: 6 }
+
+  - id: "hard_03_posterize_then_solarize"
+    ops:
+      - { name: "PosterizeIncreasing", level: 8 }
+      - { name: "SolarizeIncreasing", level: 8 }
+
+  - id: "hard_04_color_contrast_brightness"
+    ops:
+      - { name: "ColorIncreasing", level: 8 }
+      - { name: "ContrastIncreasing", level: 8 }
+      - { name: "BrightnessIncreasing", level: 8 }
+
+  - id: "hard_05_equalize_posterize_salt"
+    ops:
+      - { name: "Equalize", level: 0 }
+      - { name: "PosterizeIncreasing", level: 7 }
+      - { name: "SaltNoise", level: 6 }
+
+  - id: "hard_06_sharpness_extreme_then_contrast"
+    ops:
+      - { name: "SharpnessIncreasing", level: 9 }
+      - { name: "ContrastIncreasing", level: 7 }
+
+  - id: "hard_07_invert_then_posterize"
+    ops:
+      - { name: "Invert", level: 0 }
+      - { name: "PosterizeIncreasing", level: 8 }
+
+  - id: "hard_08_invert_solarizeadd_brightness"
+    ops:
+      - { name: "Invert", level: 0 }
+      - { name: "SolarizeAdd", level: 8 }
+      - { name: "BrightnessIncreasing", level: 6 }
+
+  - id: "hard_09_noise_combo_then_contrast"
+    ops:
+      - { name: "GaussianNoise", level: 7 }
+      - { name: "SaltNoise", level: 7 }
+      - { name: "ContrastIncreasing", level: 6 }
+
+  - id: "hard_10_mixed_heavy"
+    ops:
+      - { name: "BrightnessIncreasing", level: 7 }
+      - { name: "ColorIncreasing", level: 7 }
+      - { name: "SolarizeIncreasing", level: 7 }
+      - { name: "PosterizeIncreasing", level: 7 }
+
+

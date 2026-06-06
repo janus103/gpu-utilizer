@@ -1,0 +1,4 @@
+*.ipynb linguist-documentation
+ZOA_WEIGHT/*.pth filter=lfs diff=lfs merge=lfs -text
+ZOA_FSC/*.pth filter=lfs diff=lfs merge=lfs -text
+FSC/*.pth filter=lfs diff=lfs merge=lfs -text

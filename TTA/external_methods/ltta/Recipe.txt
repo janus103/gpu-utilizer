@@ -1,0 +1,114 @@
+# ResNet50
+- Pretrained: False (From Scratch)
+- Optimizer: SGD
+- Learning Rate (Base): 0.1 
+- LR Scheduler: Cosine Decay 
+- Epochs: 300
+- Warmup Epochs: 5
+- Loss: BCE Loss 
+- Augmentation 
+    -- Mixup: 0.1
+    -- CutMix: 1.0
+    -- Policy: RandAugmentation (rand-m7-mstd0.5-inc1)
+- Weight Decay: (1 x 10e-4) ~ (2 x 20e-5)
+- Label smoothing: 0.0
+- EMA: True (0.9999)
+- Drop Path : 0.05
+- Gradient CLIP: None
+- Timm Bash commands:  
+CUDA_VISIBLE_DEVICES=0 python3 train.py --data-dir /home/oem/jin/datasets/imagenet --train-split train --val-split val \
+      --model resnet50 --num-classes 1000 --input-size 3 224 224 \
+      -b 256 -j 4 \
+      --opt sgd --lr 0.1 --sched cosine --epochs 300 --warmup-epochs 5 \
+      --bce-loss --mixup 0.1 --cutmix 1.0 --aa rand-m7-mstd0.5-inc1 \
+      --weight-decay 20e-5 --smoothing 0.0 \
+      --model-ema --model-ema-decay 0.9999 --drop-path 0.05 \
+      --output ./output --experiment resnet50_scratch
+
+
+
+# MobileNetv2
+- Pretrained: False (From Scratch)
+- Optimizer: SGD
+- Learning Rate (Base): 0.05
+- LR Scheduler: Cosine Decay 
+- Epochs: 300
+- Warmup Epochs: 5
+- Loss: CE Loss 
+- Augmentation 
+    -- Mixup: 0.2
+    -- CutMix: 0.0
+    -- Policy: RandAugmentation (rand-m9-mstd0.5)
+- Weight Decay: (1 x 10e-5) 
+- Label smoothing: 0.1
+- EMA: True (0.9999)
+- Drop Path : 0.0
+- Gradient CLIP: None
+- Timm Bash commands:
+CUDA_VISIBLE_DEVICES=1 python3 train.py --data-dir /home/oem/jin/datasets/imagenet --train-split train --val-split val \
+      --model mobilenetv2_100 --num-classes 1000 --input-size 3 224 224 \
+      -b 256 -j 4 \
+      --opt sgd --lr 0.05 --sched cosine --epochs 300 --warmup-epochs 5 \
+      --mixup 0.2 --cutmix 0.0 --aa rand-m9-mstd0.5 \
+      --weight-decay 1e-5 --smoothing 0.1 \
+      --model-ema --model-ema-decay 0.9999 --drop-path 0.0 \
+      --output ./output --experiment mobilenetv2_scratch
+
+
+
+# ViT-B / 16 (DeiT Style)
+- Pretrained: False (From Scratch)
+- Optimizer: AdamW
+- Learning Rate (Base): 1e-3
+- LR Scheduler: Cosine Decay 
+- Epochs: 300
+- Warmup Epochs: 5
+- Loss: CE Loss 
+- Augmentation 
+    -- Mixup: 0.8
+    -- CutMix: 1.0
+    -- Policy: RandAugmentation (rand-m9-mstd0.5)
+- Weight Decay: 0.05 
+- Label smoothing: 0.1
+- EMA: True (0.9999)
+- Drop Path : 0.1
+- Gradient CLIP: 1
+- Timm Bash commands:
+python3 train.py --data-dir /home/oem/jin/datasets/imagenet --train-split train --val-split val \
+      --model deit_base_patch16_224 --num-classes 1000 --input-size 3 256 256 \
+      -b 256 -j 4 \
+      --opt adamw --lr 1e-3 --sched cosine --epochs 300 --warmup-epochs 5 \
+      --mixup 0.8 --cutmix 1.0 --aa rand-m9-mstd0.5 \
+      --weight-decay 0.05 --smoothing 0.1 \
+      --model-ema --model-ema-decay 0.9999 --drop-path 0.1 \
+      --clip-grad 1.0 --clip-mode norm \
+      --output ./output --experiment deit_base_scratch
+
+# MobileViT (XXS)
+- Pretrained: False (From Scratch)
+- Optimizer: AdamW
+- Learning Rate (Base): 1e-3 ~ 2e-3
+- LR Scheduler: Cosine Decay 
+- Epochs: 300
+- Warmup Epochs: 5
+- Loss: CE Loss 
+- Augmentation 
+    -- Mixup: 0.1
+    -- CutMix: 0.0
+    -- Policy: Basic
+- Weight Decay: 0.01
+- Label smoothing: 0.1
+- EMA: True (0.9999)
+- Drop Path : 0.1
+- Gradient CLIP: 1
+- Timm Bash commands:
+
+CUDA_VISIBLE_DEVICES=2 python3 train.py --data-dir /home/oem/jin/datasets/imagenet --train-split train --val-split val \
+      --model mobilevit_xxs --num-classes 1000 --input-size 3 256 256 \
+      -b 256 -j 4 \
+      --opt adamw --lr 2e-3 --sched cosine --epochs 300 --warmup-epochs 5 \
+      --mixup 0.1 --cutmix 0.0 \
+      --weight-decay 0.01 --smoothing 0.1 \
+      --model-ema --model-ema-decay 0.9999 --drop-path 0.1 \
+      --clip-grad 1.0 --clip-mode norm \
+      --output ./output --experiment mobilevit_xxs_scratch
