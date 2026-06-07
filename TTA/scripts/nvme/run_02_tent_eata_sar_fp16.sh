@@ -16,12 +16,18 @@ fi
 if [[ "${NO_IDLE_CHECK}" == "1" ]]; then
   COMMON_OPTIONAL+=(--no-idle-check)
 fi
+wait_before_process() {
+  local label="$1"
+  echo "[nvme] waiting ${NVME_PROCESS_GAP_SECONDS}s before ${label}"
+  sleep "${NVME_PROCESS_GAP_SECONDS}"
+}
 
 run_tent_eata() {
   local model="$1"
   local image_size="$2"
   local adapt_types="$3"
   local gops="$4"
+  wait_before_process "TENT/EATA ${model}"
   python3 TTA/profile_tta_stream.py \
     --model "${model}" \
     --model-source timm \
@@ -49,6 +55,7 @@ run_tent_eata() {
 
 run_sar() {
   local model_list="$1"
+  wait_before_process "SAR ${model_list}"
   python3 TTA/profile_sar_fp16_stream.py \
     --models "${model_list}" \
     --batch-sizes "${BATCH_SIZES}" \

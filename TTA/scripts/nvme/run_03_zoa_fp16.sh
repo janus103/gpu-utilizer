@@ -9,6 +9,9 @@ source TTA/configs/nvme_env.sh
 export LD_LIBRARY_PATH=""
 mkdir -p "${RESULTS_DIR}"
 
+echo "[nvme] waiting ${NVME_PROCESS_GAP_SECONDS}s before ZOA sweep"
+sleep "${NVME_PROCESS_GAP_SECONDS}"
+
 MODELS="${MODELS:-resnet50,vit_base_patch16_224,mobilevit_xxs}" \
 OUT="${RESULTS_DIR}/zoa_fp16_${CORRUPTION}_l${LEVEL}_gpu${GPU}.csv" \
 FORWARD_EQUIV_FACTOR="${ZOA_FORWARD_EQUIV_FACTOR}" \

@@ -71,6 +71,8 @@ run_external_case() {
   log_path="${LOG_DIR}/${case_name}_${CORRUPTION}_l${LEVEL}_bs${batch_size}_gpu${GPU}.log"
   output_csv="${RESULTS_DIR}/${case_name}_${CORRUPTION}_l${LEVEL}_bs${batch_size}_gpu${GPU}.csv"
   echo "[external] start case=${case_name} batch=${batch_size} log=${log_path}"
+  echo "[external] waiting ${NVME_PROCESS_GAP_SECONDS}s before ${case_name}"
+  sleep "${NVME_PROCESS_GAP_SECONDS}"
 
   set +e
   BATCH_SIZE="${batch_size}" OUTPUT_CSV="${output_csv}" bash TTA/run_external_tta_command.sh "${case_name}" > "${log_path}" 2>&1
@@ -98,8 +100,8 @@ run_external_case ltta_resnet50 ltta resnet50 "${LTTA_BATCH_SIZE:-128}"
 run_external_case ltta_mobilevit_xxs ltta mobilevit_xxs "${LTTA_BATCH_SIZE:-128}"
 
 # SOA/SFO source-only random-init runs.
-run_external_case sfo_resnet50 sfo resnet50 "${SFO_BATCH_SIZE:-256}"
-run_external_case sfo_mobilevit_xxs sfo mobilevit_xxs "${SFO_BATCH_SIZE:-256}"
-run_external_case sfo_vit_b sfo vit_base_patch16_224 "${SFO_BATCH_SIZE:-256}"
+run_external_case sfo_resnet50 sfo resnet50 "${SFO_BATCH_SIZE:-1}"
+run_external_case sfo_mobilevit_xxs sfo mobilevit_xxs "${SFO_BATCH_SIZE:-1}"
+run_external_case sfo_vit_b sfo vit_base_patch16_224 "${SFO_BATCH_SIZE:-1}"
 
 echo "[external] status csv: ${STATUS_CSV}"

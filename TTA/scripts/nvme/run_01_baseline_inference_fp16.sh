@@ -15,11 +15,17 @@ fi
 if [[ "${NO_IDLE_CHECK}" == "1" ]]; then
   COMMON_OPTIONAL+=(--no-idle-check)
 fi
+wait_before_process() {
+  local label="$1"
+  echo "[nvme] waiting ${NVME_PROCESS_GAP_SECONDS}s before ${label}"
+  sleep "${NVME_PROCESS_GAP_SECONDS}"
+}
 
 run_model() {
   local model="$1"
   local image_size="$2"
   local gops="$3"
+  wait_before_process "baseline ${model}"
   python3 TTA/profile_tta_stream.py \
     --model "${model}" \
     --model-source timm \
